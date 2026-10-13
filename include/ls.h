@@ -1,5 +1,5 @@
-#ifndef LS_H
-# define LS_H
+#ifndef LS_H_
+# define LS_H_
 
 #include <stdio.h>
 #include <stdbool.h>

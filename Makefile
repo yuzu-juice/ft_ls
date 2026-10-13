@@ -3,7 +3,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 SRCS = src/main.c \
-	src/parser.c
+	src/parser.c \
+	src/list.c
 
 OBJS = $(SRCS:.c=.o)
 

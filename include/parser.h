@@ -1,5 +1,5 @@
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef PARSER_H_
+# define PARSER_H_
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include "list.h"
 
 typedef struct s_args
 {
