@@ -16,7 +16,9 @@ int main(int argc, char **argv) {
   (void)cwd_n_alloc;
   (void)cwd_n_used;
 
-  t_option opt = parse_options((size_t)argc - 1, argv + 1);
-  printf("-a: %d\n-l: %d\n-r: %d\n-R: %d\n-t: %d\n", opt.all, opt.long_listing_format, opt.reverse, opt.recursive, opt.sort_by_time);
+  t_args args = parse_args((size_t)argc - 1, argv + 1);
+  
+  printf("-a: %d\n-l: %d\n-r: %d\n-R: %d\n-t: %d\n", args.all, args.long_listing_format, args.reverse, args.recursive, args.sort_by_time);
+  
   return 0;
 }
