@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <sys/stat.h>
+#include <dirent.h>
 
 enum e_filetype
   {

@@ -35,7 +35,7 @@ t_args parse_args(size_t ac, char **av)
 	  args.recursive = true;
 	else
 	  {
-	    dprintf(STDOUT_FILENO, "ft_ls: unrecognized option '%s'\n", av[i]);
+	    dprintf(STDERR_FILENO, "ft_ls: unrecognized option '%s'\n", av[i]);
 	    ft_lstclear(&args.filename);	    
 	    exit (2);
 	  }
@@ -63,7 +63,7 @@ t_args parse_args(size_t ac, char **av)
 		args.sort_by_time = true;
 		break ;
 	      default:
-		dprintf(STDOUT_FILENO, "ft_ls: unrecognized option '%s'\n", av[i]);
+		dprintf(STDERR_FILENO, "ft_ls: unrecognized option '%s'\n", av[i]);
 		ft_lstclear(&args.filename);
 		exit (2);
 	      }
@@ -80,5 +80,7 @@ t_args parse_args(size_t ac, char **av)
       }
 
   }
-    return args;
+  if (!args.filename)
+    args.filename = ft_lstnew(".");
+  return args;
 }
