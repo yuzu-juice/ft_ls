@@ -2,7 +2,8 @@ NAME = ft_ls
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = src/main.c
+SRCS = src/main.c \
+	src/parser.c
 
 OBJS = $(SRCS:.c=.o)
 
