@@ -1,4 +1,5 @@
 #include "../include/parser.h"
+#include <bits/getopt_ext.h>
 
 t_args init_args(void)
 {
@@ -23,7 +24,10 @@ t_args parse_args(size_t ac, char **av)
   for (size_t i = 0; i < ac; ++i)
   {
     if (strlen(av[i]) == 2 && strcmp(av[i], "--") == 0)
+      {
 	end_of_option = true;
+	continue ;
+      }
     // Start with "--"
     if (!end_of_option && strncmp(av[i], "--", 2) == 0)
       {

@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
   (void)cwd_n_used;
 
   t_args args = parse_args((size_t)argc - 1, argv + 1);
-
+  
   // ft_printlst(args.filename);
   
   // printf("-a: %d\n-l: %d\n-r: %d\n-R: %d\n-t: %d\n", args.all, args.long_listing_format, args.reverse, args.recursive, args.sort_by_time);
@@ -33,7 +33,8 @@ int main(int argc, char **argv) {
 	{
 	  struct dirent *ent = readdir(path);
 	  if (has_multi_dir)
-	    printf("%s:\n", filename->filename);
+            printf("%s:\n", filename->filename);
+          bool first = true;
 	  while (ent)
 	    {
 	      if (!args.all && strncmp(ent->d_name, ".", 1) == 0)
@@ -41,14 +42,14 @@ int main(int argc, char **argv) {
 		  ent = readdir(path);
 		  continue ;
 		}
+              if (!first)
+                printf("  ");
 	      printf("%s", ent->d_name);
 	      ent = readdir(path);
-	      if (ent)
-		printf("  ");
-	      else
-		printf("\n");
+	      first = false;
 	    }
 	  closedir(path);
+	  printf("\n");
 	  if (has_multi_dir && filename->next)
 	    printf("\n");
 	}
