@@ -1,6 +1,7 @@
-#include "../include/ls.h"
+#include "../include/type.h"
 #include "../include/parser.h"
 #include "../include/list.h"
+#include "../include/print.h"
 
 /*
   cwd_file points to a vector of t_fileinfo, one per file.
@@ -31,24 +32,19 @@ int main(int argc, char **argv) {
       DIR *path = opendir(filename->filename);
       if (path)
 	{
-	  struct dirent *ent = readdir(path);
+	  struct dirent *ent;
 	  if (has_multi_dir)
             printf("%s:\n", filename->filename);
           bool first = true;
-	  while (ent)
+	  while ((ent = readdir(path)) != NULL)
 	    {
 	      if (!args.all && strncmp(ent->d_name, ".", 1) == 0)
-		{
-		  ent = readdir(path);
 		  continue ;
-		}
               if (!first)
                 printf("  ");
-	      printf("%s", ent->d_name);
-	      ent = readdir(path);
+	      print_fileinfo(*ent, args);
 	      first = false;
 	    }
-	  closedir(path);
 	  printf("\n");
 	  if (has_multi_dir && filename->next)
 	    printf("\n");
@@ -58,6 +54,7 @@ int main(int argc, char **argv) {
 	  dprintf(STDERR_FILENO, "ft_ls: cannot access '%s", filename->filename);
 	  perror("'");
 	}
+      closedir(path);
       filename = filename->next;
     }
   ft_lstclear(&args.filename);

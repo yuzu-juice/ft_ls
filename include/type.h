@@ -1,10 +1,11 @@
-#ifndef LS_H_
-# define LS_H_
+#ifndef TYPE_H_
+# define TYPE_H_
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include "list.h"
 
 enum e_filetype
   {
@@ -66,5 +67,15 @@ typedef struct s_fileinfo
   // Cached screen width (including quoting).
   size_t width;
 } t_fileinfo;
+
+typedef struct s_args
+{
+  t_list *filename;
+  bool all;
+  bool long_listing_format;
+  bool reverse;
+  bool recursive;
+  bool sort_by_time;
+} t_args;
 
 #endif
