@@ -39,9 +39,11 @@ int main(int argc, char **argv) {
 	  while ((ent = readdir(path)) != NULL)
 	    {
 	      if (!args.all && strncmp(ent->d_name, ".", 1) == 0)
-		  continue ;
-              if (!first)
-                printf("  ");
+		continue ;
+	      if (!first && !args.long_listing_format)
+		dprintf(STDOUT_FILENO, "  ");
+	      if (!first && args.long_listing_format)
+		dprintf(STDOUT_FILENO, "\n");
 	      print_fileinfo(*ent, args);
 	      first = false;
 	    }
