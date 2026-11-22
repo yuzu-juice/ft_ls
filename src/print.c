@@ -7,7 +7,7 @@
 #include "../include/type.h"
 
 static void set_perm_str(mode_t, char[10]);
-static char get_filetype_chr(struct stat);
+static char get_filetype_chr(mode_t);
 
 void print_fileinfo(struct dirent ent, t_args args) {
   (void)args;
@@ -22,7 +22,12 @@ void print_fileinfo(struct dirent ent, t_args args) {
   if (args.long_listing_format) {
     char perm_str[10];
     set_perm_str(perm, perm_str);
-    dprintf(STDOUT_FILENO, "%s %s", perm_str, ent.d_name);
+    dprintf(STDOUT_FILENO,
+	    "%c%s %s", 
+	    get_filetype_chr(st.st_mode), 
+	    perm_str,
+	    ent.d_name
+	    );
   }
   else {
     dprintf(STDOUT_FILENO, "%s", ent.d_name);
@@ -55,6 +60,14 @@ static void set_perm_str(mode_t perm, char str[10]) {
     str[8] = (perm & S_IXOTH) ? 't' : 'T';
 }
 
-static char get_filetype_chr(struct stat st) {
+static char get_filetype_chr(mode_t mode) {
+  if (S_ISREG(mode))  return '-';
+  if (S_ISDIR(mode))  return 'd';
+  if (S_ISLNK(mode))  return 'l';
+  if (S_ISCHR(mode))  return 'c';
+  if (S_ISBLK(mode))  return 'b';
+  if (S_ISFIFO(mode)) return 'p';
+  if (S_ISSOCK(mode)) return 's';
   
+  return '?';
 };
