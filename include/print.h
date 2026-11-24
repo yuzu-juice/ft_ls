@@ -2,6 +2,7 @@
 # define PRINT_H_
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "type.h"
 
 void print_fileinfo(struct dirent, t_args);

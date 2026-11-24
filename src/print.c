@@ -4,14 +4,16 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <strings.h>
+#include <pwd.h>
+#include <stdint.h>
+#include "../include/print.h"
 #include "../include/type.h"
 
 static void set_perm_str(mode_t, char[10]);
 static char get_filetype_chr(mode_t);
+static void print_username_from_uid(uid_t);
 
 void print_fileinfo(struct dirent ent, t_args args) {
-  (void)args;
-
   struct stat st;
   if (lstat(ent.d_name, &st) == -1) {
     perror("lstat");
@@ -19,19 +21,18 @@ void print_fileinfo(struct dirent ent, t_args args) {
   }
 
   mode_t perm = st.st_mode & (S_ISUID | S_ISGID | S_ISVTX | S_IRWXU | S_IRWXG | S_IRWXO);
-  if (args.long_listing_format) {
+  if (args.options.long_listing_format) {
     char perm_str[10];
     set_perm_str(perm, perm_str);
-    dprintf(STDOUT_FILENO,
-	    "%c%s %s", 
-	    get_filetype_chr(st.st_mode), 
-	    perm_str,
-	    ent.d_name
-	    );
+    printf("%c%s ", get_filetype_chr(st.st_mode), perm_str);
+    printf("%ju ", (uintmax_t)st.st_nlink);
+    print_username_from_uid(st.st_uid);
+    printf("%s ", ent.d_name);
   }
   else {
-    dprintf(STDOUT_FILENO, "%s", ent.d_name);
+    printf("%s", ent.d_name);
   }
+  fflush(stdout);
 }
 
 static void set_perm_str(mode_t perm, char str[10]) {
@@ -70,4 +71,13 @@ static char get_filetype_chr(mode_t mode) {
   if (S_ISSOCK(mode)) return 's';
   
   return '?';
-};
+}
+
+static void print_username_from_uid(uid_t uid) {
+  struct passwd *pw = getpwuid(uid);
+  if (pw) {
+    printf("%s ", pw->pw_name);
+  } else {
+    printf("%ju ", (uintmax_t)uid);
+  }
+}

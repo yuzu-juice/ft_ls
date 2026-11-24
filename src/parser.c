@@ -1,25 +1,13 @@
 #include "../include/parser.h"
 #include <bits/getopt_ext.h>
 
-t_args init_args(void)
-{
-  t_args args;
-
-  args.filename = NULL;
-  args.all = false;
-  args.long_listing_format = false;
-  args.reverse = false;
-  args.recursive = false;
-  args.sort_by_time = false;
-
-  return args;
-}
+static t_args init_args(size_t);
 
 t_args parse_args(size_t ac, char **av)
 {
   bool end_of_option = false;
 
-  t_args args = init_args();
+  t_args args = init_args(ac);
 
   for (size_t i = 0; i < ac; ++i)
   {
@@ -32,15 +20,15 @@ t_args parse_args(size_t ac, char **av)
     if (!end_of_option && strncmp(av[i], "--", 2) == 0)
       {
 	if (strcmp(&av[i][2], "all") == 0)
-	  args.all = true;
+	  args.options.all = true;
 	else if (strcmp(&av[i][2], "reverse") == 0)
-	  args.reverse = true;
+	  args.options.reverse = true;
 	else if (strcmp(&av[i][2], "recursive") == 0)
-	  args.recursive = true;
+	  args.options.recursive = true;
 	else
 	  {
 	    dprintf(STDERR_FILENO, "ft_ls: unrecognized option '%s'\n", av[i]);
-	    ft_lstclear(&args.filename);	    
+	    free(args.paths);
 	    exit (2);
 	  }
       }
@@ -52,39 +40,52 @@ t_args parse_args(size_t ac, char **av)
 	    switch (av[i][j])
 	      {
 	      case 'a':
-		args.all = true;
+		args.options.all = true;
 		break ;
 	      case 'l':
-		args.long_listing_format = true;
+		args.options.long_listing_format = true;
 		break ;
 	      case 'r':
-		args.reverse = true;
+		args.options.reverse = true;
 		break ;
 	      case 'R':
-		args.recursive = true;
+		args.options.recursive = true;
 		break ;
 	      case 't':
-		args.sort_by_time = true;
+		args.options.sort_by_time = true;
 		break ;
 	      default:
-		dprintf(STDERR_FILENO, "ft_ls: unrecognized option '%s'\n", av[i]);
-		ft_lstclear(&args.filename);
-		exit (2);
+		dprintf(STDERR_FILENO, "ft_ls: invalid option -- '%c'\n", av[i][j]);
+		free(args.paths);
+                exit (2);
 	      }
 	  }
       }
-    // otherwise dirname or filename
-    else
-      {
-	if (!args.filename)
-	  args.filename = ft_lstnew(av[i]);
-	else
-	  ft_lstadd_back(&args.filename, ft_lstnew(av[i]));
-	// append to list of filenames.
-      }
-
+      // otherwise dirname or filename
+    else {
+        args.paths[args.path_count] = av[i];
+	++args.path_count;
+    }
   }
-  if (!args.filename)
-    args.filename = ft_lstnew(".");
+  if (!args.paths[0])
+    {
+      args.paths[0] = ".";
+      ++args.path_count;
+    }
+  return args;
+}
+
+static t_args init_args(size_t ac)
+{
+  t_args args;
+  t_options options;
+  options = (t_options){0};
+  args.options = options;
+  // Allocating space based on `argc` might result in some excess, but it'll be sufficient.
+  args.paths = malloc(sizeof(char *) * ac + 1);
+  if (!args.paths)
+    exit(2);
+  args.paths[0] = NULL;
+  args.path_count = 0;
   return args;
 }

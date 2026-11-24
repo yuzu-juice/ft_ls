@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 #include <dirent.h>
-#include "list.h"
 
 enum e_filetype
   {
@@ -68,14 +67,25 @@ typedef struct s_fileinfo
   size_t width;
 } t_fileinfo;
 
-typedef struct s_args
-{
-  t_list *filename;
+typedef struct s_options {
   bool all;
   bool long_listing_format;
   bool reverse;
   bool recursive;
   bool sort_by_time;
+} t_options;
+
+typedef struct s_args {
+  t_options options;
+  char **paths;
+  size_t path_count;
 } t_args;
+
+typedef struct s_filelist
+{
+  t_fileinfo *files;
+  size_t     count;
+  size_t     capacity;
+} t_filelist;
 
 #endif
