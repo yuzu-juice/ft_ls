@@ -2,6 +2,7 @@
 #define PRINT_H_
 
 #include "type.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
