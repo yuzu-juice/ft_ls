@@ -1,8 +1,6 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
-#include <bits/getopt_ext.h>
-#include <getopt.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
