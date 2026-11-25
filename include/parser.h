@@ -1,14 +1,14 @@
 #ifndef PARSER_H_
-# define PARSER_H_
+#define PARSER_H_
 
+#include <bits/getopt_ext.h>
+#include <getopt.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <string.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
-#include <getopt.h>
-#include <bits/getopt_ext.h>
+#include <string.h>
+#include <unistd.h>
 
 #include "type.h"
 

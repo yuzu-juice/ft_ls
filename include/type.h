@@ -1,10 +1,10 @@
 #ifndef TYPE_H_
-# define TYPE_H_
+#define TYPE_H_
 
-#include <stdio.h>
-#include <stdbool.h>
-#include <sys/stat.h>
 #include <dirent.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <sys/stat.h>
 
 /*
 enum e_filetype
@@ -30,8 +30,7 @@ enum e_acl_type
   };
 */
 
-typedef struct s_fileinfo
-{
+typedef struct s_fileinfo {
   // The file name.
   char *name;
 
@@ -86,11 +85,10 @@ typedef struct s_args {
   size_t path_count;
 } t_args;
 
-typedef struct s_filelist
-{
+typedef struct s_filelist {
   t_fileinfo *files;
-  size_t     count;
-  size_t     capacity;
+  size_t count;
+  size_t capacity;
 } t_filelist;
 
 #endif

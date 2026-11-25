@@ -10,7 +10,7 @@ t_filelist init_filelist(char *path, bool all) {
     struct dirent *ent;
     while ((ent = readdir(d)) != NULL) {
       if (!all && ent->d_name[0] == '.')
-        continue ;
+        continue;
       add_file(&fl, d, ent);
     }
     closedir(d);
@@ -53,4 +53,3 @@ void free_filelist(t_filelist *fl) {
   free(fl->files);
   *fl = (t_filelist){0};
 }
-

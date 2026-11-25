@@ -1,7 +1,7 @@
 #include "../include/ft_ls.h"
 
 int main(int argc, char **argv) {
-  setlocale (LC_ALL, "");
+  setlocale(LC_ALL, "");
   t_args args = parse_args((size_t)argc - 1, argv + 1);
   bool has_multi_dir = args.path_count == 1 ? false : true;
 
