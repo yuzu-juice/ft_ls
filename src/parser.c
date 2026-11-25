@@ -71,7 +71,7 @@ static t_args init_args(size_t ac) {
   options = (t_options){0};
   args.options = options;
   // Allocating space based on `argc` might result in some excess, but it'll be sufficient.
-  args.paths = malloc(sizeof(char *) * ac + 1);
+  args.paths = malloc(sizeof(char *) * (ac + 1));
   if (!args.paths)
     exit(2);
   args.paths[0] = NULL;
