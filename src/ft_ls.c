@@ -7,7 +7,10 @@ int main(int argc, char **argv) {
 
   for (size_t i = 0; i < args.path_count; ++i) {
     t_filelist fl = init_filelist(args.paths[i], args.options.all);
-    qsort(fl.files, fl.count, sizeof(*fl.files), compare_filename);
+    if (args.options.reverse)
+      qsort(fl.files, fl.count, sizeof(*fl.files), compare_filename_reverse);
+    else
+      qsort(fl.files, fl.count, sizeof(*fl.files), compare_filename);
     if (has_multi_dir)
       printf("%s:\n", args.paths[i]);
 

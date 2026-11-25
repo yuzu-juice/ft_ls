@@ -6,3 +6,5 @@ int compare_filename(const void *a, const void *b) {
 
   return strcoll(left->name, right->name);
 }
+
+int compare_filename_reverse(const void *a, const void *b) { return compare_filename(b, a); }
