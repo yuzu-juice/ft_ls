@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <bits/getopt_ext.h>
+
 #include "type.h"
 
 t_args parse_args(size_t, char **);

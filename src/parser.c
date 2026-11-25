@@ -1,5 +1,4 @@
 #include "../include/parser.h"
-#include <bits/getopt_ext.h>
 
 static t_args init_args(size_t);
 

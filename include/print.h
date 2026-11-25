@@ -5,6 +5,6 @@
 #include <stdlib.h>
 #include "type.h"
 
-void print_fileinfo(struct dirent, t_args);
+void print_filelist(const t_filelist *, const t_options *);
 
 #endif

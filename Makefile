@@ -4,6 +4,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 SRCS = src/main.c \
 	src/parser.c \
+	src/filelist.c \
 	src/print.c
 
 OBJS = $(SRCS:.c=.o)
@@ -28,6 +29,6 @@ valgrind: $(NAME)
 	valgrind --leak-check=full ./$(NAME)
 
 test: $(NAME)
-	sh test/run.sh
+	sh test/test.sh
 
 .PHONY: all clean fclean re valgrind test

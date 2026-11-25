@@ -1,38 +1,35 @@
-#include <stdio.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <strings.h>
-#include <pwd.h>
-#include <stdint.h>
-#include "../include/print.h"
-#include "../include/type.h"
+#include "../include/filelist.h"
 
 static void set_perm_str(mode_t, char[10]);
 static char get_filetype_chr(mode_t);
 static void print_username_from_uid(uid_t);
+static void print_groupname_from_gid(gid_t);
+static void print_mtime(time_t);
 
-void print_fileinfo(struct dirent ent, t_args args) {
-  struct stat st;
-  if (lstat(ent.d_name, &st) == -1) {
-    perror("lstat");
-    exit(EXIT_FAILURE);
+void print_filelist(const t_filelist *fl, const t_options *options) {
+  // TODO: 幅の取得 文字列として取得する関数をそれぞれについて作る
+  // size_t nlink_width, owner_width, group_width, file_size_width;
+  
+  for (size_t i = 0; i < fl->count; ++i) {
+    const t_fileinfo *file = &fl->files[i];
+    if (options->long_listing_format) {
+      mode_t perm = file->stat.st_mode & (S_ISUID | S_ISGID | S_ISVTX | S_IRWXU | S_IRWXG | S_IRWXO);
+      char perm_str[10];
+      set_perm_str(perm, perm_str);
+      printf( "%c%s ", get_filetype_chr(file->stat.st_mode), perm_str);
+      printf("%ju ", (uintmax_t)file->stat.st_nlink);
+      print_username_from_uid(file->stat.st_uid);
+      print_groupname_from_gid(file->stat.st_gid);
+      printf("%jd ", (intmax_t)file->stat.st_size);
+      print_mtime(file->stat.st_mtime);
+    }
+    printf("%s", fl->files[i].name);
+    if (i == fl->count - 1 || options->long_listing_format)
+      printf("\n");
+    else
+      printf("  ");
   }
-
-  mode_t perm = st.st_mode & (S_ISUID | S_ISGID | S_ISVTX | S_IRWXU | S_IRWXG | S_IRWXO);
-  if (args.options.long_listing_format) {
-    char perm_str[10];
-    set_perm_str(perm, perm_str);
-    printf("%c%s ", get_filetype_chr(st.st_mode), perm_str);
-    printf("%ju ", (uintmax_t)st.st_nlink);
-    print_username_from_uid(st.st_uid);
-    printf("%s ", ent.d_name);
-  }
-  else {
-    printf("%s", ent.d_name);
-  }
-  fflush(stdout);
+  
 }
 
 static void set_perm_str(mode_t perm, char str[10]) {
@@ -75,9 +72,26 @@ static char get_filetype_chr(mode_t mode) {
 
 static void print_username_from_uid(uid_t uid) {
   struct passwd *pw = getpwuid(uid);
-  if (pw) {
+  if (pw) 
     printf("%s ", pw->pw_name);
-  } else {
+  else
     printf("%ju ", (uintmax_t)uid);
-  }
+}
+
+static void print_groupname_from_gid(gid_t gid) {
+  struct group *gr = getgrgid(gid);
+  if (gr)
+    printf("%s ", gr->gr_name);
+  else
+    printf("%ju ", (uintmax_t)gid);
+}
+
+static void print_mtime(time_t mtime) {
+  char buf[64];
+
+  // TODO: 半年の判定をして表示を変える
+  if (strftime(buf, sizeof(buf), "%b %e %H:%M", localtime(&mtime)) == 0)
+    printf("%jd ", (intmax_t)mtime);
+  else
+    printf("%s ", buf);
 }

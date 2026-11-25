@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
+/*
 enum e_filetype
   {
     unknown,
@@ -17,7 +18,7 @@ enum e_filetype
     symbolic_link,
     sock,
     whiteout,
-    arg_directory    
+    arg_directory
   };
 
 enum e_acl_type
@@ -27,6 +28,7 @@ enum e_acl_type
     ACL_T_LSM_CONTEXT_ONLY,
     ACL_T_YES
   };
+*/
 
 typedef struct s_fileinfo
 {
@@ -36,26 +38,28 @@ typedef struct s_fileinfo
   // For symbolic link, name of the file linked to, otherwise zero.
   char *linkname;
 
+  struct stat stat;
+
+  /*
   // For terminal hyperlinks.
   char *absolute_name;
 
-  struct stat stat;
 
   enum e_filetype filetype;
 
-  // For symbolic link and long listing, st_mode of file linked to, otherwise zero.
-  mode_t linkmode;
+  // For symbolic link and long listing, st_mode of file linked to, otherwise
+zero. mode_t linkmode;
 
   // Security context.
   char *scontext;
 
   bool stat_ok;
 
-  // For symbolic link and color printing, true if linked-to file exists, otherwise false.
-  bool linkok;
+  // For symbolic link and color printing, true if linked-to file exists,
+otherwise false. bool linkok;
 
-  // For long listings, true if the file has an access control list, or a security context.
-  enum e_acl_type acl_type;
+  // For long listings, true if the file has an access control list, or a
+security context. enum e_acl_type acl_type;
 
   // For color listings, true if a regular file has capability info.
   bool has_capability;
@@ -65,6 +69,7 @@ typedef struct s_fileinfo
 
   // Cached screen width (including quoting).
   size_t width;
+  */
 } t_fileinfo;
 
 typedef struct s_options {
