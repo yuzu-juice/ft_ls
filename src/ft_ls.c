@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
       qsort(fl.files, fl.count, sizeof(*fl.files), compare_filename);
     if (args.options.reverse)
       reverse_filelist(&fl);
-    if (has_multi_dir)
+    if (has_multi_dir || args.options.recursive)
       printf("%s:\n", args.paths[i]);
 
     print_filelist(&fl, &args.options);

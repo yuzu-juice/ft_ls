@@ -10,6 +10,14 @@ void print_filelist(const t_filelist *fl, const t_options *options) {
   // TODO: 幅の取得 文字列として取得する関数をそれぞれについて作る
   // size_t nlink_width, owner_width, group_width, file_size_width;
 
+  if (options->long_listing_format) {
+    blkcnt_t total = 0;
+
+    for (size_t i = 0; i < fl->count; ++i)
+      total += fl->files[i].stat.st_blocks;
+    printf("total %jd\n", (intmax_t)total / 2);
+  }
+
   for (size_t i = 0; i < fl->count; ++i) {
     const t_fileinfo *file = &fl->files[i];
     if (options->long_listing_format) {
