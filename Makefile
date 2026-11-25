@@ -2,9 +2,9 @@ NAME = ft_ls
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 CLANG_FORMAT_IMAGE := ghcr.io/cpp-linter/clang-tools:19
-CLANG_FORMAT := docker run --rm -v "$(CURDIR):/src" -w /src $(CLANG_FORMAT_IMAGE) clang-format
+CLANG_FORMAT := docker run --rm --user $(shell id -u):$(shell id -g) -v "$(CURDIR):/src" -w /src $(CLANG_FORMAT_IMAGE) clang-format
 
-SRCS = src/main.c \
+SRCS = src/ft_ls.c \
 	src/parser.c \
 	src/filelist.c \
 	src/print.c \
@@ -12,6 +12,7 @@ SRCS = src/main.c \
 
 OBJS = $(SRCS:.c=.o)
 FORMAT_FILES = $(SRCS) $(wildcard include/*.h)
+TEST_FILES = $(wildcard test/*.test.sh)
 
 all: $(NAME)
 
@@ -33,7 +34,7 @@ valgrind: $(NAME)
 	valgrind --leak-check=full ./$(NAME)
 
 test: $(NAME)
-	sh test/test.sh
+	@for test in $(TEST_FILES); do sh "$$test" || exit 1; done
 
 format:
 	$(CLANG_FORMAT) -i --style=file $(FORMAT_FILES)
