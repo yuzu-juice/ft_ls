@@ -25,8 +25,22 @@ int main(int argc, char **argv) {
 
     print_filelist(&fl, &args.options);
 
-    if (has_multi_dir && stack.count != 0)
+    if (args.options.recursive) {
+      for (size_t i = fl.count; i > 0; --i) {
+        const t_fileinfo *file = &fl.files[i - 1];
+        if (strcmp(file->name, ".") == 0 || strcmp(file->name, "..") == 0)
+          continue;
+
+        if (S_ISDIR(fl.files[i - 1].stat.st_mode)) {
+          char *full_path = join_path(path, file->name);
+          stack_push(&stack, full_path);
+          free(full_path);
+        }
+      }
+    }
+    if ((has_multi_dir || args.options.recursive) && stack.count > 0)
       printf("\n");
+
     free_filelist(&fl);
     free(path);
   }

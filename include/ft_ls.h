@@ -7,6 +7,7 @@
 #include "sort.h"
 #include "stack.h"
 #include "type.h"
+#include "util.h"
 
 #include <locale.h>
 
