@@ -1,6 +1,7 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
+#include "sort.h"
 #include "type.h"
 
 #include <stdbool.h>

@@ -8,7 +8,8 @@ SRCS = src/ft_ls.c \
 	src/parser.c \
 	src/filelist.c \
 	src/print.c \
-	src/sort.c
+	src/sort.c \
+	src/stack.c
 
 OBJS = $(SRCS:.c=.o)
 FORMAT_FILES = $(SRCS) $(wildcard include/*.h)

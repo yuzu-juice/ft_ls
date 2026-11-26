@@ -25,7 +25,7 @@ static void add_file(t_filelist *fl, DIR *d, struct dirent *ent) {
   size_t new_capacity;
 
   if (fl->count == fl->capacity) {
-    new_capacity = fl->capacity == 0 ? 1 : fl->capacity * 2;
+    new_capacity = fl->capacity == 0 ? INITIAL_CAPACITY : fl->capacity * 2;
     tmp = realloc(fl->files, new_capacity * sizeof(*tmp));
     if (!tmp)
       exit(2);

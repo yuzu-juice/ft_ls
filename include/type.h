@@ -6,29 +6,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
-/*
-enum e_filetype
-  {
-    unknown,
-    fifo,
-    chardev,
-    directory,
-    blockdev,
-    normal,
-    symbolic_link,
-    sock,
-    whiteout,
-    arg_directory
-  };
-
-enum e_acl_type
-  {
-    ACL_T_NONE,
-    ACL_T_UNKNOWN,
-    ACL_T_LSM_CONTEXT_ONLY,
-    ACL_T_YES
-  };
-*/
+#define INITIAL_CAPACITY 4
 
 typedef struct s_fileinfo {
   // The file name.
@@ -38,34 +16,7 @@ typedef struct s_fileinfo {
   char *linkname;
 
   struct stat stat;
-
   /*
-  // For terminal hyperlinks.
-  char *absolute_name;
-
-
-  enum e_filetype filetype;
-
-  // For symbolic link and long listing, st_mode of file linked to, otherwise
-zero. mode_t linkmode;
-
-  // Security context.
-  char *scontext;
-
-  bool stat_ok;
-
-  // For symbolic link and color printing, true if linked-to file exists,
-otherwise false. bool linkok;
-
-  // For long listings, true if the file has an access control list, or a
-security context. enum e_acl_type acl_type;
-
-  // For color listings, true if a regular file has capability info.
-  bool has_capability;
-
-  // Whether file name needs quoting. tri-state with -1 == unknown.
-  int quoted;
-
   // Cached screen width (including quoting).
   size_t width;
   */
@@ -90,5 +41,11 @@ typedef struct s_filelist {
   size_t count;
   size_t capacity;
 } t_filelist;
+
+typedef struct s_stack {
+  char **path;
+  size_t count;
+  size_t capacity;
+} t_stack;
 
 #endif

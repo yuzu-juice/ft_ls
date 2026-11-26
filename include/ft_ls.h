@@ -5,6 +5,7 @@
 #include "parser.h"
 #include "print.h"
 #include "sort.h"
+#include "stack.h"
 #include "type.h"
 
 #include <locale.h>

@@ -62,6 +62,12 @@ t_args parse_args(size_t ac, char **av) {
     args.paths[0] = ".";
     ++args.path_count;
   }
+  if (args.options.sort_by_time)
+    qsort(args.paths, args.path_count, sizeof(*args.paths), compare_path_timestamp);
+  else
+    qsort(args.paths, args.path_count, sizeof(*args.paths), compare_path);
+  if (args.options.reverse)
+    reverse_paths(args.paths, args.path_count);
   return args;
 }
 
